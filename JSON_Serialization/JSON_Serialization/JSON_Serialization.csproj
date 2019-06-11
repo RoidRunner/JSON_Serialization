@@ -1,12 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>JSON</RootNamespace>
     <ApplicationIcon />
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <StartupObject />
     <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>I:\Personal Files\Documents\Custom Libraries\JSON_Serialization\</OutputPath>
   </PropertyGroup>
 
 </Project>

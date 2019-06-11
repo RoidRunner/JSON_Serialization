@@ -53,7 +53,7 @@ namespace JSON
         /// </summary>
         public static JSONContainer NewObject()
         {
-            return new JSONContainer() { Type = ContainerType.OBJECT }; 
+            return new JSONContainer() { Type = ContainerType.OBJECT };
         }
 
         /// <summary>
@@ -81,6 +81,16 @@ namespace JSON
         #region TryGetField
 
         /// <summary>
+        /// Checks for a fields existence
+        /// </summary>
+        /// <param name="identifier">Key/Name/Identifier identifying the field to be checked</param>
+        /// <returns>True, if field exists. False, otherwise</returns>
+        public bool HasField(string identifier)
+        {
+            return fields.ContainsKey(identifier);
+        }
+
+        /// <summary>
         /// Attempts to retrieve a field
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
@@ -95,15 +105,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">Boolean value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out bool val)
+        public bool TryGetField(string identifier, out bool val, bool fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Boolean;
-                return field.IsBool;
+                if (field.IsBool)
+                {
+                    val = field.Boolean;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -111,15 +125,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">String value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out string val)
+        public bool TryGetField(string identifier, out string val, string fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.String;
-                return field.IsString;
+                if (field.IsString)
+                {
+                    val = field.String;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -127,15 +145,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">Character value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out char val)
+        public bool TryGetField(string identifier, out char val, char fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Character;
-                return field.IsString;
+                if (field.IsString)
+                {
+                    val = field.Character;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -143,15 +165,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">Unsigned 64-bit integer value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out ulong val)
+        public bool TryGetField(string identifier, out ulong val, ulong fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Unsigned_Int64;
-                return field.IsNumber;
+                if (field.IsNumber && !field.IsFloat && !field.IsSigned)
+                {
+                    val = field.Unsigned_Int64;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -159,15 +185,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">Signed 64-bit integer value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out long val)
+        public bool TryGetField(string identifier, out long val, long fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Signed_Int64;
-                return field.IsNumber;
+                if (field.IsNumber && !field.IsFloat)
+                {
+                    val = field.Signed_Int64;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -175,15 +205,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">Unsigned 32-bit integer value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out uint val)
+        public bool TryGetField(string identifier, out uint val, uint fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Unsigned_Int32;
-                return field.IsNumber;
+                if (field.IsNumber && !field.IsFloat && !field.IsSigned)
+                {
+                    val = field.Unsigned_Int32;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -191,15 +225,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">Signed 32-bit integer value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out int val)
+        public bool TryGetField(string identifier, out int val, int fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Signed_Int32;
-                return field.IsNumber;
+                if (field.IsNumber && !field.IsFloat)
+                {
+                    val = field.Signed_Int32;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -207,15 +245,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">64-bit floating point value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out double val)
+        public bool TryGetField(string identifier, out double val, double fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Float64;
-                return field.IsNumber;
+                if (field.IsNumber)
+                {
+                    val = field.Float64;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>
@@ -223,15 +265,19 @@ namespace JSON
         /// </summary>
         /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
         /// <param name="val">32-bit floating point value stored in the field</param>
+        /// <param name="fallback">Fallback value to assign if no matching field was found</param>
         /// <returns>True, if a matching field was obtained. False, otherwise</returns>
-        public bool TryGetField(string identifier, out float val)
+        public bool TryGetField(string identifier, out float val, float fallback = default)
         {
             if (TryGetField(identifier, out JSONField field))
             {
-                val = field.Float32;
-                return field.IsNumber;
+                if (field.IsNumber)
+                {
+                    val = field.Float32;
+                    return true;
+                }
             }
-            val = default;
+            val = fallback;
             return false;
         }
         /// <summary>

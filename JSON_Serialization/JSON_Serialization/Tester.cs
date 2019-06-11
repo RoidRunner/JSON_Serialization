@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if DEBUG
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -87,3 +88,4 @@ namespace JSON
         }
     }
 }
+#endif
