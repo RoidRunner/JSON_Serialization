@@ -466,7 +466,7 @@ namespace JSON
                             }
                             else if (current == '\"')
                             {
-                                if (index - 1 > fieldValueStart)
+                                if (index > fieldValueStart)
                                 {
                                     string value = str.Substring(fieldValueStart, index - fieldValueStart);
                                     field = new JSONField(JSONHelper.GetOriginalFormat(value), fieldIdentifier);
