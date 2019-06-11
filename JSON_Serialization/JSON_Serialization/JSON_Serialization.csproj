@@ -13,4 +13,9 @@
     <OutputPath>I:\Personal Files\Documents\Custom Libraries\JSON_Serialization\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>I:\Personal Files\Documents\Custom Libraries\JSON_Serialization\netcoreapp2.1\</OutputPath>
+  </PropertyGroup>
+
 </Project>

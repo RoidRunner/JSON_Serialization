@@ -5,22 +5,8 @@ using System.Text;
 
 namespace JSON
 {
-    internal enum ParseStates
+    internal static class JSONHelper
     {
-        DetectCollectionType,
-        ExpectingFieldOrScopeEnd,
-        ParsingFieldIdentifier,
-        ExpectingColonOrComma,
-        ParsingStringValue,
-        ParsingNumberValue,
-        SeekingValue
-    }
-
-
-    public static class JSONHelper
-    {
-        internal static readonly CultureInfo Culture = new CultureInfo("en-us");
-
         internal static string NULL = "null";
         internal const string TRUE = "true";
         internal const string FALSE = "false";

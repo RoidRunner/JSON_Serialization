@@ -307,6 +307,38 @@ namespace JSON
             if (TryGetField(identifier, out JSONField field))
             {
                 val = field.Container;
+                return field.IsContainer;
+            }
+            val = default;
+            return false;
+        }
+        /// <summary>
+        /// Attempts to retrieve a field as a JSONContainer array value
+        /// </summary>
+        /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
+        /// <param name="val">JSONContainer array value stored in the field</param>
+        /// <returns>True, if a matching field was obtained. False, otherwise</returns>
+        public bool TryGetArrayField(string identifier, out JSONContainer val)
+        {
+            if (TryGetField(identifier, out JSONField field))
+            {
+                val = field.Container;
+                return field.IsArray;
+            }
+            val = default;
+            return false;
+        }
+        /// <summary>
+        /// Attempts to retrieve a field as a JSONContainer object value
+        /// </summary>
+        /// <param name="identifier">Key/Name/Identifier identifying the field to be retrieved</param>
+        /// <param name="val">JSONContainer object value stored in the field</param>
+        /// <returns>True, if a matching field was obtained. False, otherwise</returns>
+        public bool TryGetObjectField(string identifier, out JSONContainer val)
+        {
+            if (TryGetField(identifier, out JSONField field))
+            {
+                val = field.Container;
                 return field.IsObject;
             }
             val = default;

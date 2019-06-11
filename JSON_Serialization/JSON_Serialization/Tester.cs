@@ -1,4 +1,4 @@
-﻿#if DEBUG
+﻿#if TESTING
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +8,12 @@ namespace JSON
     class Tester
     {
         public static int Main(string[] args)
+        {
+            AnyContainerTest();
+            return 0;
+        }
+
+        private static void AnyContainerTest()
         {
             bool kill = false;
             while (!kill)
@@ -40,6 +46,7 @@ namespace JSON
                     if (JSONContainer.TryParse(containerJSON, out JSONContainer result, out string errormessage))
                     {
                         Console.WriteLine("\nParseSuccess!\n\n" + result.Build(true));
+                        result.TryGetField("BotAdminIDs", out JSONContainer test);
                     }
                     else
                     {
@@ -48,12 +55,6 @@ namespace JSON
                 }
                 Console.WriteLine();
             }
-            return 0;
-        }
-
-        private static void AnyContainerTest()
-        {
-
         }
 
         private static void CustomContainerTest()
