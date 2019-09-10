@@ -875,6 +875,11 @@ namespace JSON
                                     fieldIdentifier = str.Substring(fieldIdentifierStart, index - fieldIdentifierStart);
                                     parseStep = ObjectParseStep.SeekingColon;
                                 }
+                                else if (index - 1 == fieldIdentifierStart)
+                                {
+                                    fieldIdentifier = str[fieldIdentifierStart].ToString();
+                                    parseStep = ObjectParseStep.SeekingColon;
+                                }
                                 else
                                 {
                                     errormessage = JSONHelper.GetErrorMessageString(str, index, JSONHelper.StructureType.Object, "Encountered empty (length = 0) field identifier!", containerStack);
@@ -913,11 +918,19 @@ namespace JSON
                                     errormessage = JSONHelper.GetErrorMessageString(str, index, JSONHelper.StructureType.Object, "Duplicate field identifier \"{fieldIdentifier}\"", containerStack);
                                     return false;
                                 }
-                                if (str[index] == '}')
+                                if (index < str.Length)
                                 {
-                                    index++;
-                                    containerStack.Pop();
-                                    return true;
+                                    if (str[index] == '}')
+                                    {
+                                        index++;
+                                        containerStack.Pop();
+                                        return true;
+                                    }
+                                }
+                                else
+                                {
+                                    errormessage = "Unexpected ending of input string";
+                                    return false;
                                 }
                                 parseStep = ObjectParseStep.SeekingFieldIdentifierOrScopeEnd;
                             }
